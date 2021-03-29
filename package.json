@@ -1,0 +1,32 @@
+{
+  "name": "starter-kit-express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Ikrom Murodov",
+    "email": "ikrommurodov2001@gmail.com",
+    "url": "https://github.com/Ikrom-Murodov"
+  },
+  "scripts": {
+    "ts:watch": "tsc -w",
+    "start": "nodemon dist/src/main.js",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "src/*.ts": "eslint src/"
+  },
+  "pre-commit": "lint-staged",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-plugin-import": "^2.22.1",
+    "lint-staged": "^10.5.4",
+    "nodemon": "^2.0.7",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.3"
+  }
+}

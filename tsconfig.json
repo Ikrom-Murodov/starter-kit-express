@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "allowJs": false,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "ES6",
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitOnError": true
+  },
+  "include": ["./src/**/*", "./autocannon.ts"],
+  "exclude": ["node_modules"]
+}
