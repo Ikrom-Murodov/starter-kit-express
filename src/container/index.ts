@@ -4,5 +4,5 @@ import tokens from './tokens';
 // interfaces that disappear after compiling ts to js.
 
 // eslint-disable-next-line import/no-cycle
-export { IServices } from './interfaces';
+export { IServices, IEnums } from './interfaces';
 export { tokens };

@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import { IServices, tokens } from './index';
+import { IServices, tokens, IEnums } from './index';
 
 import {
   ConfigService,
@@ -8,6 +8,8 @@ import {
   LoggerService,
   MongooseConnectionService,
 } from '../services';
+
+import { ResponseType } from '../enums';
 
 const container: Container = new Container();
 
@@ -33,5 +35,11 @@ container
   )
   .to(MongooseConnectionService)
   .inSingletonScope();
+
+// ---------- enums ---------- //
+
+container
+  .bind<IEnums.IResponseType>(tokens.enums.ResponseTypeEnumToken)
+  .toConstantValue(ResponseType);
 
 export default container;
