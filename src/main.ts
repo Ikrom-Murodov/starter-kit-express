@@ -1,13 +1,18 @@
 import 'reflect-metadata';
 import { Request, Response } from 'express';
 
-import {
-  InversifyExpressServer,
-  httpGet,
-  controller,
-} from 'inversify-express-utils';
+import { InversifyExpressServer, httpGet, controller } from 'inversify-express-utils';
 
 import container from './container/inversify.config';
+import { IServices, tokens } from './container';
+
+const debugService = container.get<IServices.Debug.IDebugService>(
+  tokens.services.DebugServiceToken,
+);
+
+const configService = container.get<IServices.Config.IConfigService>(
+  tokens.services.ConfigServiceToken,
+);
 
 // Will be updated
 @controller('/test')
@@ -25,7 +30,13 @@ const ieServer = new InversifyExpressServer(container, null, {
 
 const app = ieServer.build();
 
-app.listen(4545, 'localhost', () => {
-  // Will be updated
-  console.log('Server was started: http://localhost:4545');
-});
+app.listen(
+  configService.get.serverConfig.port,
+  configService.get.serverConfig.host,
+  () => {
+    debugService.debug(
+      'app:server',
+      `Server was started: http://${configService.get.serverConfig.host}:${configService.get.serverConfig.port}`,
+    );
+  },
+);
