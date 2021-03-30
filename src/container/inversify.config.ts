@@ -7,6 +7,7 @@ import {
   DebugService,
   LoggerService,
   MongooseConnectionService,
+  ResponseService,
 } from '../services';
 
 import { ResponseType } from '../enums';
@@ -34,6 +35,11 @@ container
     tokens.services.MongooseConnectionServiceToken,
   )
   .to(MongooseConnectionService)
+  .inSingletonScope();
+
+container
+  .bind<IServices.Response.IResponseService>(tokens.services.ResponseServiceToken)
+  .to(ResponseService)
   .inSingletonScope();
 
 // ---------- enums ---------- //
