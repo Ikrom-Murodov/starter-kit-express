@@ -3,7 +3,13 @@
 const ConfigServiceToken = Symbol('Config service token');
 const DebugServiceToken = Symbol('Debug service token');
 const LoggerServiceToken = Symbol('Logger service token');
+const MongooseConnectionServiceToken = Symbol('Mongoose connection service');
 
 export default {
-  services: { ConfigServiceToken, DebugServiceToken, LoggerServiceToken },
+  services: {
+    ConfigServiceToken,
+    DebugServiceToken,
+    LoggerServiceToken,
+    MongooseConnectionServiceToken,
+  },
 };
