@@ -16,6 +16,16 @@ export interface IResponseFromResource<TData = any> {
   data: TData;
 }
 
+export interface IResponseFromController<
+  TData extends { [key: string]: any } | [] | null = null
+> {
+  data: TData;
+  success: IResponseFromService['success'];
+  errors: IResponseFromService['errors'];
+  status: number;
+  message: IResponseFromService['message'];
+}
+
 export interface IResponseService {
   responseFromService<TData extends { [key: string]: any } | [] | null = null>(
     data: IResponseFromService<TData>,

@@ -29,10 +29,16 @@ export default class ResponseService implements IServices.Response.IResponseServ
   }
 
   public responseFromController<TData extends { [key: string]: any } | [] | null = null>(
-    res: Response,
+    res: Response<IServices.Response.IResponseFromController<TData>>,
     dataFromService: IServices.Response.IResponseFromService<TData>,
   ) {
     const status = this.httpStatusFromResponseType[dataFromService.responseType];
-    res.status(status).json({ ...dataFromService, status });
+    res.status(status).json({
+      status,
+      data: dataFromService.data,
+      errors: dataFromService.errors,
+      message: dataFromService.message,
+      success: dataFromService.success,
+    });
   }
 }
