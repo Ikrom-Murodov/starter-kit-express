@@ -10,6 +10,6 @@ export interface IConfigData {
 
 export interface IOptionalConfigData extends PartialDeep<IConfigData> {}
 
-export interface IConfig {
+export interface IConfigService {
   get: IConfigData;
 }

@@ -8,7 +8,7 @@ const container: Container = new Container();
 
 // ---------- services ---------- //
 container
-  .bind<IServices.Config.IConfig>(tokens.services.ConfigServiceToken)
+  .bind<IServices.Config.IConfigService>(tokens.services.ConfigServiceToken)
   .to(ConfigService)
   .inSingletonScope();
 

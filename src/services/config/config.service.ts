@@ -17,7 +17,7 @@ const configData: { [key: string]: IServices.Config.IOptionalConfigData } = {
 };
 
 @injectable()
-export default class ConfigService implements IServices.Config.IConfig {
+export default class ConfigService implements IServices.Config.IConfigService {
   private configData: IServices.Config.IConfigData | undefined;
 
   public get get(): IServices.Config.IConfigData {
