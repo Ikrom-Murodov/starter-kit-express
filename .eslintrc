@@ -16,6 +16,7 @@
     "@typescript-eslint/indent": 0,
     "@typescript-eslint/no-useless-constructor": 0,
     "@typescript-eslint/ban-ts-comment": 0,
-    "object-curly-newline": 0
+    "object-curly-newline": 0,
+    "@typescript-eslint/comma-dangle": 0
   }
 }
