@@ -12,6 +12,8 @@ export interface IConfigData {
     warn: { uri: string; collection: string };
     info: { uri: string; collection: string };
   };
+
+  mongodbConfig: { uri: string };
 }
 
 export interface IOptionalConfigData extends PartialDeep<IConfigData> {}

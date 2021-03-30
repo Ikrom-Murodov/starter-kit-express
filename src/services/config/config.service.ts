@@ -11,6 +11,8 @@ const defaultConfigData: IServices.Config.IConfigData = {
     warn: { uri: 'mongodb://localhost/logger', collection: 'warn' },
     info: { uri: 'mongodb://localhost/logger', collection: 'info' },
   },
+
+  mongodbConfig: { uri: 'mongodb://localhost/test' },
 };
 
 const configData: { [key: string]: IServices.Config.IOptionalConfigData } = {
