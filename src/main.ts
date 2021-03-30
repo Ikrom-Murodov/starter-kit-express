@@ -7,7 +7,7 @@ import {
   controller,
 } from 'inversify-express-utils';
 
-import container from './inversify.config';
+import container from './container/inversify.config';
 
 // Will be updated
 @controller('/test')
