@@ -3,6 +3,7 @@ import DebugService from './debug/debug.service';
 import LoggerService from './logger/logger.service';
 import MongooseConnectionService from './mongoose-connection/mongoose-connection.service';
 import ResponseService from './response/response.service';
+import ValidationService from './validation/validation.service';
 
 export {
   ConfigService,
@@ -10,4 +11,5 @@ export {
   LoggerService,
   MongooseConnectionService,
   ResponseService,
+  ValidationService,
 };
