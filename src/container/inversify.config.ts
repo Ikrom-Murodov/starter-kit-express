@@ -2,7 +2,7 @@ import { Container } from 'inversify';
 
 import { IServices, tokens } from './index';
 
-import { ConfigService } from '../services';
+import { ConfigService, DebugService } from '../services';
 
 const container: Container = new Container();
 
@@ -10,6 +10,11 @@ const container: Container = new Container();
 container
   .bind<IServices.Config.IConfig>(tokens.services.ConfigServiceToken)
   .to(ConfigService)
+  .inSingletonScope();
+
+container
+  .bind<IServices.Debug.IDebugService>(tokens.services.DebugServiceToken)
+  .to(DebugService)
   .inSingletonScope();
 
 export default container;
