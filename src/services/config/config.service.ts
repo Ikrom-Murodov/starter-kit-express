@@ -4,9 +4,12 @@ import { injectable, inject } from 'inversify';
 import { IServices, tokens } from '../../container';
 
 const defaultConfigData: IServices.Config.IConfigData = {
-  serverConfig: {
-    host: 'localhost',
-    port: 4545,
+  serverConfig: { host: 'localhost', port: 4545 },
+
+  logger: {
+    error: { uri: 'mongodb://localhost/logger', collection: 'error' },
+    warn: { uri: 'mongodb://localhost/logger', collection: 'warn' },
+    info: { uri: 'mongodb://localhost/logger', collection: 'info' },
   },
 };
 

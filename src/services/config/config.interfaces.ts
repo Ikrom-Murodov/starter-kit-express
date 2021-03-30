@@ -6,6 +6,12 @@ export interface IConfigData {
     host: string;
     port: number;
   };
+
+  logger: {
+    error: { uri: string; collection: string };
+    warn: { uri: string; collection: string };
+    info: { uri: string; collection: string };
+  };
 }
 
 export interface IOptionalConfigData extends PartialDeep<IConfigData> {}
