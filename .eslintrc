@@ -1,9 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": [
-    "airbnb-typescript/base",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": ["airbnb-typescript/base", "plugin:@typescript-eslint/recommended"],
 
   "parserOptions": {
     "project": "tsconfig.json"
@@ -17,6 +14,7 @@
     "import/prefer-default-export": 0,
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/indent": 0,
-    "@typescript-eslint/no-useless-constructor": 0
+    "@typescript-eslint/no-useless-constructor": 0,
+    "@typescript-eslint/ban-ts-comment": 0
   }
 }
