@@ -13,6 +13,10 @@
 
   "rules": {
     "@typescript-eslint/no-inferrable-types": 0,
-    "class-methods-use-this": 0
+    "class-methods-use-this": 0,
+    "import/prefer-default-export": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/indent": 0,
+    "@typescript-eslint/no-useless-constructor": 0
   }
 }
