@@ -8,6 +8,7 @@ import {
   LoggerService,
   MongooseConnectionService,
   ResponseService,
+  ValidationService,
 } from '../services';
 
 import { IModules, User } from '../app/app.module';
@@ -49,6 +50,11 @@ container
     tokens.services.MongooseConnectionServiceToken,
   )
   .to(MongooseConnectionService)
+  .inSingletonScope();
+
+container
+  .bind<IServices.Validation.IValidationService>(tokens.services.ValidationServiceToken)
+  .to(ValidationService)
   .inSingletonScope();
 
 container

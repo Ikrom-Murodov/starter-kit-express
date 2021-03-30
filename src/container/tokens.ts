@@ -5,6 +5,7 @@ const DebugServiceToken = Symbol('Debug service token');
 const LoggerServiceToken = Symbol('Logger service token');
 const MongooseConnectionServiceToken = Symbol('Mongoose connection service');
 const ResponseServiceToken = Symbol('Response service token');
+const ValidationServiceToken = Symbol('Validation service token');
 
 // ---------- enums ---------- //
 
@@ -24,6 +25,7 @@ export default {
     LoggerServiceToken,
     MongooseConnectionServiceToken,
     ResponseServiceToken,
+    ValidationServiceToken,
   },
 
   enums: { ResponseTypeEnumToken },
