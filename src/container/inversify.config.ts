@@ -10,9 +10,23 @@ import {
   ResponseService,
 } from '../services';
 
+import { IModules, User } from '../app/app.module';
+
 import { ResponseType } from '../enums';
 
 const container: Container = new Container();
+
+// ---------- modules ---------- //
+
+container
+  .bind<IModules.User.IUserService>(tokens.modules.userTokens.UserServiceToken)
+  .to(User.UserService)
+  .inSingletonScope();
+
+container
+  .bind<IModules.User.IUserResource>(tokens.modules.userTokens.UserResourceToken)
+  .to(User.UserResource)
+  .inSingletonScope();
 
 // ---------- services ---------- //
 container

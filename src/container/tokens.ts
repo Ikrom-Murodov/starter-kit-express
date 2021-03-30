@@ -10,6 +10,13 @@ const ResponseServiceToken = Symbol('Response service token');
 
 const ResponseTypeEnumToken = Symbol('Response type enum token');
 
+// ---------- modules ---------- //
+
+const userTokens = {
+  UserServiceToken: Symbol('User service token.'),
+  UserResourceToken: Symbol('User resource token'),
+};
+
 export default {
   services: {
     ConfigServiceToken,
@@ -20,4 +27,6 @@ export default {
   },
 
   enums: { ResponseTypeEnumToken },
+
+  modules: { userTokens },
 };
