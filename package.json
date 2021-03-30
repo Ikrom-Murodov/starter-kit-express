@@ -14,7 +14,7 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "src/*.ts": "eslint src/"
+    "./src/**/*.ts": "eslint src/"
   },
   "pre-commit": "lint-staged",
   "devDependencies": {
