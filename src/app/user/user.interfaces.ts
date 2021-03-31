@@ -43,7 +43,16 @@ export interface IParamsForCreateUserFromService extends IBaseUser {
   password: TUserPassword;
 }
 
+export interface IParamsForCheckUserPasswordFromService {
+  id: IUser['id'];
+  password: TUserPassword;
+}
+
 export interface IUserService {
+  readonly checkPassword: (
+    userData: IParamsForCheckUserPasswordFromService,
+  ) => Promise<IServices.Response.IResponseFromService<null>>;
+
   readonly findUsersByParams: (
     params: IParamsForFindUsersByParamsFromService,
   ) => Promise<IServices.Response.IResponseFromService<IPublicUserData[] | null>>;
@@ -71,4 +80,8 @@ export interface IUserResource {
   readonly findUsersByParams: (
     params: IParamsForFindUsersByParamsFromResource,
   ) => Promise<IServices.Response.IResponseFromResource<IPublicUserData[] | null>>;
+
+  readonly getCompleteUserDataById: (
+    userId: IUser['id'],
+  ) => Promise<IServices.Response.IResponseFromResource<IUser | null>>;
 }

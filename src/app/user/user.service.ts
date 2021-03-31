@@ -43,6 +43,15 @@ export default class UserService implements IModules.User.IUserService {
       .required()
       .email(),
 
+    public readonly validationSchemaForUserId = validationService.string().required(),
+
+    private readonly validationSchemaForCheckPassword = validationService.object<IModules.User.IParamsForCheckUserPasswordFromService>(
+      {
+        id: validationSchemaForUserId,
+        password: validationSchemaForUserPassword,
+      },
+    ),
+
     private readonly validationSchemaForCreateUser = validationService.object<IModules.User.IParamsForCreateUserFromService>(
       {
         name: validationService.string().required().min(3).max(30),
@@ -69,6 +78,43 @@ export default class UserService implements IModules.User.IUserService {
       },
     ),
   ) {}
+
+  public async checkPassword(
+    userData: IModules.User.IParamsForCheckUserPasswordFromService,
+  ) {
+    const validationErrors = await this.validationService.validationObject(
+      this.validationSchemaForCheckPassword,
+      userData,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    const result = await this.userResource.getCompleteUserDataById(userData.id);
+
+    if (!result.data || !result.success) return this.userByIdNotFound(userData.id);
+
+    const { passwordHash } = await this.generateSaltAndPasswordHash(
+      userData.password,
+      result.data.salt,
+    );
+
+    if (passwordHash !== result.data.passwordHash) {
+      return this.responseService.responseFromService({
+        data: null,
+        errors: { password: "Passwords don't match." },
+        message: 'Invalid data.',
+        responseType: this.responseType.INVALID_DATA,
+        success: false,
+      });
+    }
+
+    return this.responseService.responseFromService({
+      data: null,
+      success: true,
+      responseType: this.responseType.OK,
+      errors: null,
+      message: 'Passwords match.',
+    });
+  }
 
   public async createUser(userData: IModules.User.IParamsForCreateUserFromService) {
     const validationErrors = await this.validationService.validationObject(
@@ -179,5 +225,17 @@ export default class UserService implements IModules.User.IUserService {
     );
 
     return { salt, passwordHash };
+  }
+
+  private userByIdNotFound(
+    id: IModules.User.IUser['id'],
+  ): IServices.Response.IResponseFromService<null> {
+    return this.responseService.responseFromService({
+      data: null,
+      errors: { notExist: `User with this id: ${id} was not found.` },
+      message: 'Not found.',
+      responseType: this.responseType.NOT_FOUND,
+      success: false,
+    });
   }
 }

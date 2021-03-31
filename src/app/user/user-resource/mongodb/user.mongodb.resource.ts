@@ -1,4 +1,5 @@
 import { injectable, inject } from 'inversify';
+import mongoose from 'mongoose';
 
 import { tokens, IServices, IEnums, IModules, IUtils } from '../../../../container';
 
@@ -40,6 +41,19 @@ export default class UserMongodbResource implements IModules.User.IUserResource 
     return { success: false, data: null };
   }
 
+  public async getCompleteUserDataById(id: IModules.User.IUser['id']) {
+    if (!this.checkUserIdForValidity(id)) return { success: false, data: null };
+    const userDocument = await this.Users.findById(id);
+    if (!userDocument) return { success: false, data: null };
+
+    const userData = this.getCompleteUserDataFromDocument(userDocument);
+    return { success: true, data: userData };
+  }
+
+  private checkUserIdForValidity(id: any): boolean {
+    return mongoose.Types.ObjectId.isValid(id);
+  }
+
   private getPublicUserDataFromDocument(
     userDocument: IUserDocument,
   ): IModules.User.IPublicUserData {
@@ -48,6 +62,24 @@ export default class UserMongodbResource implements IModules.User.IUserResource 
       'surname',
       'age',
       'email',
+      'id',
+      'verifiedEmail',
+    ]);
+  }
+
+  private getCompleteUserDataFromDocument(
+    userDocument: IUserDocument,
+  ): IModules.User.IUser {
+    return this.objectFilteringUtil(userDocument, [
+      'name',
+      'surname',
+      'age',
+      'email',
+      'emailVerifyToken',
+      'registerType',
+      'passwordHash',
+      'salt',
+      'passwordResetToken',
       'id',
       'verifiedEmail',
     ]);
