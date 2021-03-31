@@ -44,6 +44,8 @@ export default class AuthService implements IModules.Auth.IAuthService {
         deviceId: deviceIdSchema,
       },
     ),
+
+    private readonly accessTokenSchema = validationService.string().required(),
   ) {}
 
   public async verifyEmail(emailVerifyToken: IModules.User.TEmailVerifyToken) {
@@ -148,6 +150,37 @@ export default class AuthService implements IModules.Auth.IAuthService {
       responseType: this.responseType.OK,
       message: 'You are successfully logged in.',
     });
+  }
+
+  public async isAuthenticated(accessToken: IModules.Auth.TAccessToken) {
+    const validationErrors = await this.validationService.validationData(
+      this.accessTokenSchema,
+      accessToken,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    try {
+      await this.generateTokenService.verify(
+        accessToken,
+        this.configService.get.register.jwt.accessToken.secretKey,
+      );
+
+      return this.responseService.responseFromService({
+        data: null,
+        errors: null,
+        message: 'User is authorized.',
+        responseType: this.responseType.OK,
+        success: true,
+      });
+    } catch (err) {
+      return this.responseService.responseFromService({
+        success: false,
+        data: null,
+        errors: { ...err },
+        message: 'User is not authorized.',
+        responseType: this.responseType.UNAUTHORIZED,
+      });
+    }
   }
 
   public async refreshToken(

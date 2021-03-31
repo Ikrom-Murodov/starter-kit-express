@@ -60,4 +60,11 @@ export default class AuthController {
     const result = await this.authService.refreshToken(body);
     await this.responseService.responseFromController(res, result);
   }
+
+  @httpPost('/is-authenticated')
+  public async isAuthenticated(req: Request, res: Response) {
+    const accessToken = req.headers.authorization as IModules.Auth.TAccessToken;
+    const result = await this.authService.isAuthenticated(accessToken);
+    this.responseService.responseFromController(res, result);
+  }
 }

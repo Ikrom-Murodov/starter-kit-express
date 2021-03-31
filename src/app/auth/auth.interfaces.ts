@@ -30,6 +30,10 @@ export interface IParamsForRefreshTokenUserFromService {
 }
 
 export interface IAuthService {
+  readonly isAuthenticated: (
+    accessToken: TAccessToken,
+  ) => Promise<IServices.Response.IResponseFromService>;
+
   readonly register: (
     userData: IParamsForRegisterUserFromService,
   ) => Promise<
