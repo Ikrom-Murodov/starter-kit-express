@@ -73,6 +73,13 @@ export default class AuthService implements IModules.Auth.IAuthService {
         passwordResetToken: validationService.string().required(),
       },
     ),
+
+    private readonly validationSchemaForLogoutUser = validationService.object<IModules.Auth.IParamsForLogoutUserFromService>(
+      {
+        accessToken: accessTokenSchema,
+        deviceId: deviceIdSchema,
+      },
+    ),
   ) {}
 
   public async generatePasswordResetToken(
@@ -154,6 +161,27 @@ export default class AuthService implements IModules.Auth.IAuthService {
       errors: null,
       message: 'We have sent instructions on how to recover your password to your email.',
       responseType: this.responseType.OK,
+    });
+  }
+
+  public async logout(userData: IModules.Auth.IParamsForLogoutUserFromService) {
+    const validationErrors = await this.validationService.validationObject(
+      this.validationSchemaForLogoutUser,
+      userData,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    const authenticationCheckResult = await this.isAuthenticated(userData.accessToken);
+    if (!authenticationCheckResult.success) return authenticationCheckResult;
+
+    await this.authResource.deleteUserRefreshTokenByDeviceId(userData.deviceId);
+
+    return this.responseService.responseFromService({
+      data: null,
+      errors: null,
+      message: 'You have successfully logged out.',
+      responseType: this.responseType.OK,
+      success: true,
     });
   }
 

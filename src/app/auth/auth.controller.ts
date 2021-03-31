@@ -51,6 +51,16 @@ export default class AuthController {
     this.responseService.responseFromController(res, result);
   }
 
+  @httpPost('/logout')
+  public async logout(
+    @requestBody() body: IModules.Auth.IParamsForLogoutUserFromService,
+    req: Request,
+    res: Response,
+  ) {
+    const result = await this.authService.logout(body);
+    this.responseService.responseFromController(res, result);
+  }
+
   @httpPost('/refresh-token')
   public async refreshToken(
     @requestBody() body: IModules.Auth.IParamsForRefreshTokenUserFromService,

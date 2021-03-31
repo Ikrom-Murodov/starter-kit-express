@@ -44,7 +44,16 @@ export interface IParamsForResetUserPasswordFromService {
   newPassword: IModules.User.TUserPassword;
 }
 
+export interface IParamsForLogoutUserFromService {
+  accessToken: TAccessToken;
+  deviceId: TDeviceId;
+}
+
 export interface IAuthService {
+  readonly logout: (
+    userData: IParamsForLogoutUserFromService,
+  ) => Promise<IServices.Response.IResponseFromService>;
+
   readonly resetPassword: (
     userData: IParamsForResetUserPasswordFromService,
   ) => Promise<IServices.Response.IResponseFromService>;
