@@ -12,7 +12,7 @@ import {
   ValidationService,
 } from '../services';
 
-import { User } from '../app/app.module';
+import { Auth, User } from '../app/app.module';
 
 import { ResponseType } from '../enums';
 import {
@@ -34,6 +34,16 @@ container
 container
   .bind<IModules.User.IUserResource>(tokens.modules.userTokens.UserResourceToken)
   .to(User.UserResource)
+  .inSingletonScope();
+
+container
+  .bind<IModules.Auth.IAuthService>(tokens.modules.authTokens.AuthServiceToken)
+  .to(Auth.AuthService)
+  .inSingletonScope();
+
+container
+  .bind<IModules.Auth.IAuthResource>(tokens.modules.authTokens.AuthResourceToken)
+  .to(Auth.AuthResource)
   .inSingletonScope();
 
 // ---------- services ---------- //

@@ -19,6 +19,11 @@ const userTokens = {
   UserResourceToken: Symbol('User resource token'),
 };
 
+const authTokens = {
+  AuthServiceToken: Symbol('Auth service token'),
+  AuthResourceToken: Symbol('Auth resource token'),
+};
+
 // ---------- utils ---------- //
 
 const objectFilteringToken = Symbol('Object filtering tokens.');
@@ -39,7 +44,7 @@ export default {
 
   enums: { ResponseTypeEnumToken },
 
-  modules: { userTokens },
+  modules: { userTokens, authTokens },
 
   utils: {
     objectFilteringToken,
