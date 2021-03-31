@@ -23,6 +23,8 @@ const userTokens = {
 
 const objectFilteringToken = Symbol('Object filtering tokens.');
 const generateSymbolsToken = Symbol('Generate symbols token.');
+const generatePasswordToken = Symbol('Generate password token.');
+const generateSaltToken = Symbol('Generate salt token.');
 
 export default {
   services: {
@@ -39,5 +41,10 @@ export default {
 
   modules: { userTokens },
 
-  utils: { objectFilteringToken, generateSymbolsToken },
+  utils: {
+    objectFilteringToken,
+    generateSymbolsToken,
+    generatePasswordToken,
+    generateSaltToken,
+  },
 };

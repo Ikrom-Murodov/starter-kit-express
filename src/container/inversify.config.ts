@@ -15,7 +15,12 @@ import {
 import { User } from '../app/app.module';
 
 import { ResponseType } from '../enums';
-import { generateSymbols, objectFiltering } from '../utils';
+import {
+  generateSymbols,
+  objectFiltering,
+  generatePassword,
+  generateSalt,
+} from '../utils';
 
 const container: Container = new Container();
 
@@ -76,6 +81,14 @@ container
   .toConstantValue(ResponseType);
 
 // ---------- utils ---------- //
+
+container
+  .bind<IUtils.IGeneratePassword>(tokens.utils.generatePasswordToken)
+  .toFunction(generatePassword);
+
+container
+  .bind<IUtils.IGenerateSalt>(tokens.utils.generateSaltToken)
+  .toFunction(generateSalt);
 
 container
   .bind<IUtils.IObjectFiltering>(tokens.utils.objectFilteringToken)
