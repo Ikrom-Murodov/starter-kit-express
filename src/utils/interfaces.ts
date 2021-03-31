@@ -3,3 +3,7 @@ export interface IObjectFiltering {
     [K in Keys]: Obj[K];
   };
 }
+
+export interface IGenerateSymbols {
+  (): string;
+}

@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import * as IUtils from './interfaces';
 
 const objectFiltering: IUtils.IObjectFiltering = (object, keys) => {
@@ -9,4 +10,6 @@ const objectFiltering: IUtils.IObjectFiltering = (object, keys) => {
   }, {});
 };
 
-export { objectFiltering };
+const generateSymbols: IUtils.IGenerateSymbols = () => uuid();
+
+export { objectFiltering, generateSymbols };
