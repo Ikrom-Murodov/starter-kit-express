@@ -5,6 +5,7 @@ import { IServices, tokens, IEnums, IUtils, IModules } from './index';
 import {
   ConfigService,
   DebugService,
+  GenerateTokenService,
   LoggerService,
   MailService,
   MongooseConnectionService,
@@ -47,6 +48,13 @@ container
   .inSingletonScope();
 
 // ---------- services ---------- //
+container
+  .bind<IServices.GenerateToken.IGenerateTokenService>(
+    tokens.services.GenerateTokenService,
+  )
+  .to(GenerateTokenService)
+  .inRequestScope();
+
 container
   .bind<IServices.Config.IConfigService>(tokens.services.ConfigServiceToken)
   .to(ConfigService)
