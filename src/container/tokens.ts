@@ -8,6 +8,7 @@ const ResponseServiceToken = Symbol('Response service token');
 const ValidationServiceToken = Symbol('Validation service token');
 const MailServiceToken = Symbol('Mail service token');
 const GenerateTokenService = Symbol('Generate service token.');
+const OauthServiceToken = Symbol('Oauth service token');
 
 // ---------- enums ---------- //
 
@@ -42,6 +43,7 @@ export default {
     ValidationServiceToken,
     MailServiceToken,
     GenerateTokenService,
+    OauthServiceToken,
   },
 
   enums: { ResponseTypeEnumToken },

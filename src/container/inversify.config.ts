@@ -9,6 +9,7 @@ import {
   LoggerService,
   MailService,
   MongooseConnectionService,
+  OauthService,
   ResponseService,
   ValidationService,
 } from '../services';
@@ -48,6 +49,11 @@ container
   .inSingletonScope();
 
 // ---------- services ---------- //
+container
+  .bind<IServices.Oauth.IOauthService>(tokens.services.OauthServiceToken)
+  .to(OauthService)
+  .inRequestScope();
+
 container
   .bind<IServices.GenerateToken.IGenerateTokenService>(
     tokens.services.GenerateTokenService,
