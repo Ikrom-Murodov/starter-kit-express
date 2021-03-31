@@ -3,6 +3,8 @@ import { injectable, inject } from 'inversify';
 
 import { IServices, tokens } from '../../container';
 
+import privateData from './private-data';
+
 const defaultConfigData: IServices.Config.IConfigData = {
   serverConfig: { host: 'localhost', port: 4545 },
 
@@ -13,6 +15,8 @@ const defaultConfigData: IServices.Config.IConfigData = {
   },
 
   mongodbConfig: { uri: 'mongodb://localhost/test' },
+
+  emails: { createUser: { pass: privateData.pass, user: privateData.user } },
 };
 
 const configData: { [key: string]: IServices.Config.IOptionalConfigData } = {

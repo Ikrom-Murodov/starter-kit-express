@@ -7,6 +7,8 @@ export interface IConfigData {
     port: number;
   };
 
+  emails: { createUser: { user: string; pass: string } };
+
   logger: {
     error: { uri: string; collection: string };
     warn: { uri: string; collection: string };
