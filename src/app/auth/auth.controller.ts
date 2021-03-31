@@ -50,4 +50,14 @@ export default class AuthController {
     const result = await this.authService.verifyEmail(emailVerifyToken);
     this.responseService.responseFromController(res, result);
   }
+
+  @httpPost('/refresh-token')
+  public async refreshToken(
+    @requestBody() body: IModules.Auth.IParamsForRefreshTokenUserFromService,
+    req: Request,
+    res: Response,
+  ) {
+    const result = await this.authService.refreshToken(body);
+    await this.responseService.responseFromController(res, result);
+  }
 }

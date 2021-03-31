@@ -26,6 +26,7 @@ export default class AuthService implements IModules.Auth.IAuthService {
     private readonly responseType: IEnums.IResponseType,
 
     private readonly deviceIdSchema = validationService.string().required(),
+    private readonly refreshTokenSchema = validationService.string().required(),
 
     private readonly validationSchemaForLoginUser = validationService.object<IModules.Auth.IParamsForLoginUserFromService>(
       {
@@ -36,6 +37,13 @@ export default class AuthService implements IModules.Auth.IAuthService {
     ),
 
     private readonly emailVerifyTokenSchema = validationService.string().required(),
+
+    private readonly validationSchemaForRefreshToken = validationService.object<IModules.Auth.IParamsForRefreshTokenUserFromService>(
+      {
+        refreshToken: refreshTokenSchema,
+        deviceId: deviceIdSchema,
+      },
+    ),
   ) {}
 
   public async verifyEmail(emailVerifyToken: IModules.User.TEmailVerifyToken) {
@@ -140,6 +148,57 @@ export default class AuthService implements IModules.Auth.IAuthService {
       responseType: this.responseType.OK,
       message: 'You are successfully logged in.',
     });
+  }
+
+  public async refreshToken(
+    userData: IModules.Auth.IParamsForRefreshTokenUserFromService,
+  ) {
+    const validationErrors = await this.validationService.validationObject(
+      this.validationSchemaForRefreshToken,
+      userData,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    try {
+      await this.generateTokenService.verify(
+        userData.refreshToken,
+        this.configService.get.register.jwt.refreshToken.secretKey,
+      );
+
+      const result = await this.authResource.getUserRefreshToken(userData);
+
+      if (!result.success || !result.data) {
+        return this.responseService.responseFromService({
+          data: null,
+          errors: { refreshToken: 'Refresh token was not found.' },
+          message: 'Not found.',
+          responseType: this.responseType.NOT_FOUND,
+          success: false,
+        });
+      }
+
+      const { deviceId, userId } = result.data;
+      await this.authResource.deleteUserRefreshTokenByDeviceId(deviceId);
+      const pairToken = await this.issueTokenPair(userId, deviceId, { userId });
+
+      return this.responseService.responseFromService({
+        data: pairToken,
+        errors: null,
+        message: 'A pair of new tokens was created',
+        responseType: this.responseType.CREATED,
+        success: true,
+      });
+    } catch (err) {
+      await this.authResource.deleteUserRefreshTokenByDeviceId(userData.deviceId);
+
+      return this.responseService.responseFromService({
+        data: null,
+        errors: { refreshToken: 'Refresh token is invalid.' },
+        message: 'Please login again.',
+        responseType: this.responseType.INVALID_DATA,
+        success: false,
+      });
+    }
   }
 
   private async issueTokenPair(

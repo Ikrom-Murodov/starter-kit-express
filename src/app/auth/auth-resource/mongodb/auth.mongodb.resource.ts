@@ -15,6 +15,9 @@ export default class AuthMongodbResource implements IModules.Auth.IAuthResource 
   constructor(
     @inject(tokens.services.MongooseConnectionServiceToken)
     private readonly mongooseConnectionService: IServices.MongooseConnection.IMongooseConnectionService,
+
+    @inject(tokens.utils.objectFilteringToken)
+    private readonly objectFilteringUtil: IUtils.IObjectFiltering,
   ) {
     this.Auth = this.mongooseConnectionService.connection.model<
       IAuthRefreshTokenDocument,
@@ -28,6 +31,22 @@ export default class AuthMongodbResource implements IModules.Auth.IAuthResource 
     });
     if (!refreshTokenDocument) return { success: false, data: null };
     return { success: true, data: null };
+  }
+
+  public async getUserRefreshToken(
+    data: IModules.Auth.IParamsForGetUserRefreshTokenFromResource,
+  ) {
+    const refreshTokenDocument = await this.Auth.findOne(data);
+    if (!refreshTokenDocument) return { success: false, data: null };
+
+    return {
+      success: true,
+      data: this.objectFilteringUtil(refreshTokenDocument, [
+        'userId',
+        'refreshToken',
+        'deviceId',
+      ]),
+    };
   }
 
   public async createUserRefreshToken(
