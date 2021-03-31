@@ -35,7 +35,15 @@ export interface IParamsForLoginUserViaOauthFromService {
   code: IServices.Oauth.TCode;
 }
 
+export interface IParamsForGeneratePasswordResetTokenFromSErvice {
+  email: IModules.User.IUser['email'];
+}
+
 export interface IAuthService {
+  readonly generatePasswordResetToken: (
+    userData: IParamsForGeneratePasswordResetTokenFromSErvice,
+  ) => Promise<IServices.Response.IResponseFromService<null>>;
+
   readonly loginViaOauth: (
     userData: IParamsForLoginUserViaOauthFromService,
   ) => Promise<IServices.Response.IResponseFromService<IAuthPairToken | null>>;

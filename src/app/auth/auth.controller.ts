@@ -77,4 +77,14 @@ export default class AuthController {
     const result = await this.authService.loginViaOauth(body);
     this.responseService.responseFromController(res, result);
   }
+
+  @httpPost('/generate-password-reset-token')
+  public async generatePasswordResetToken(
+    @requestBody() body: IModules.Auth.IParamsForGeneratePasswordResetTokenFromSErvice,
+    req: Request,
+    res: Response,
+  ) {
+    const result = await this.authService.generatePasswordResetToken(body);
+    this.responseService.responseFromController(res, result);
+  }
 }
