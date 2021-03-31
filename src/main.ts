@@ -4,6 +4,7 @@ import { InversifyExpressServer } from 'inversify-express-utils';
 
 import container from './container/inversify.config';
 import { IServices, tokens } from './container';
+import middleware from './middleware';
 
 const debugService = container.get<IServices.Debug.IDebugService>(
   tokens.services.DebugServiceToken,
@@ -16,6 +17,8 @@ const configService = container.get<IServices.Config.IConfigService>(
 const ieServer = new InversifyExpressServer(container, null, {
   rootPath: '/api',
 });
+
+ieServer.setConfig((app) => middleware(app));
 
 const app = ieServer.build();
 
