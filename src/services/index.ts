@@ -4,6 +4,7 @@ import LoggerService from './logger/logger.service';
 import MongooseConnectionService from './mongoose-connection/mongoose-connection.service';
 import ResponseService from './response/response.service';
 import ValidationService from './validation/validation.service';
+import MailService from './mail/mail.service';
 
 export {
   ConfigService,
@@ -12,4 +13,5 @@ export {
   MongooseConnectionService,
   ResponseService,
   ValidationService,
+  MailService,
 };

@@ -4,5 +4,6 @@ import * as Logger from './logger/logger.interfaces';
 import * as MongooseConnection from './mongoose-connection/mongoose-connection.interfaces';
 import * as Response from './response/response.interfaces';
 import * as Validation from './validation/validation.interfaces';
+import * as Mail from './mail/mail.interfaces';
 
-export { Config, Debug, Logger, MongooseConnection, Response, Validation };
+export { Config, Debug, Logger, MongooseConnection, Response, Validation, Mail };
