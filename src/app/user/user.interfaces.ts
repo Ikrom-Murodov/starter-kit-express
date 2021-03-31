@@ -48,7 +48,16 @@ export interface IParamsForCheckUserPasswordFromService {
   password: TUserPassword;
 }
 
+export interface IParamsForUpdatePrivateUserDataByIdFromService {
+  id: IUser['id'];
+  update: PartialDeep<Omit<IUser, 'id'>>;
+}
+
 export interface IUserService {
+  readonly updatePrivateUserDataById: (
+    userData: IParamsForUpdatePrivateUserDataByIdFromService,
+  ) => Promise<IServices.Response.IResponseFromService<IUser | null>>;
+
   readonly checkPassword: (
     userData: IParamsForCheckUserPasswordFromService,
   ) => Promise<IServices.Response.IResponseFromService<null>>;
@@ -72,7 +81,14 @@ export interface IParamsForFindUsersByParamsFromResource
 
 export type IParamsForCreateUserFromResource = Omit<IUser, 'id'>;
 
+export interface IParamsForUpdatePrivateUserDataByIdFromResoruce
+  extends IParamsForUpdatePrivateUserDataByIdFromService {}
+
 export interface IUserResource {
+  readonly updatePrivateUserDataById: (
+    userData: IParamsForUpdatePrivateUserDataByIdFromResoruce,
+  ) => Promise<IServices.Response.IResponseFromResource<IUser | null>>;
+
   readonly createUser: (
     userData: IParamsForCreateUserFromResource,
   ) => Promise<IServices.Response.IResponseFromResource<IPublicUserData>>;

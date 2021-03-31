@@ -77,6 +77,26 @@ export default class UserService implements IModules.User.IUserService {
         }),
       },
     ),
+
+    private readonly validationSchemaForUpdatePrivateUserData = validationService.object<IModules.User.IParamsForUpdatePrivateUserDataByIdFromService>(
+      {
+        id: validationSchemaForUserId,
+        update: validationService.object<
+          IModules.User.IParamsForUpdatePrivateUserDataByIdFromService['update']
+        >({
+          name: validationService.string().min(3).max(20),
+          surname: validationService.string().min(3).max(20),
+          age: validationService.number().min(18).max(100),
+          email: validationService.string().email(),
+          salt: validationService.string(),
+          passwordHash: validationService.string(),
+          verifiedEmail: validationService.boolean(),
+          passwordResetToken: validationService.any(),
+          emailVerifyToken: validationService.any(),
+          registerType: validationService.string().valid('base', 'oauth'),
+        }),
+      },
+    ),
   ) {}
 
   public async checkPassword(
@@ -225,6 +245,26 @@ export default class UserService implements IModules.User.IUserService {
     );
 
     return { salt, passwordHash };
+  }
+
+  public async updatePrivateUserDataById(
+    userData: IModules.User.IParamsForUpdatePrivateUserDataByIdFromService,
+  ) {
+    const validationErrors = await this.validationService.validationObject(
+      this.validationSchemaForUpdatePrivateUserData,
+      userData,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    const response = await this.userResource.updatePrivateUserDataById(userData);
+    if (!response.success || !response.data) return this.userByIdNotFound(userData.id);
+
+    return this.responseService.responseFromService({
+      ...response,
+      errors: null,
+      responseType: this.responseType.OK,
+      message: "User's private data has been successfully updated",
+    });
   }
 
   private userByIdNotFound(

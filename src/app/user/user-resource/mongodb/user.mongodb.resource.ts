@@ -50,6 +50,15 @@ export default class UserMongodbResource implements IModules.User.IUserResource 
     return { success: true, data: userData };
   }
 
+  public async updatePrivateUserDataById(
+    userData: IModules.User.IParamsForUpdatePrivateUserDataByIdFromService,
+  ) {
+    if (!this.checkUserIdForValidity(userData.id)) return { success: false, data: null };
+    const userDocument = await this.Users.findByIdAndUpdate(userData.id, userData);
+    if (!userDocument) return { success: false, data: null };
+    return { success: true, data: userDocument };
+  }
+
   private checkUserIdForValidity(id: any): boolean {
     return mongoose.Types.ObjectId.isValid(id);
   }
