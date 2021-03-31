@@ -16,6 +16,8 @@ const defaultConfigData: IServices.Config.IConfigData = {
 
   mongodbConfig: { uri: 'mongodb://localhost/test' },
 
+  register: { createUser: { saltSize: 128, iterations: 10, length: 128 } },
+
   emails: { createUser: { pass: privateData.pass, user: privateData.user } },
 };
 

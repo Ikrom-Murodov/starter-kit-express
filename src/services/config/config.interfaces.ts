@@ -9,6 +9,8 @@ export interface IConfigData {
 
   emails: { createUser: { user: string; pass: string } };
 
+  register: { createUser: { saltSize: number; iterations: number; length: number } };
+
   logger: {
     error: { uri: string; collection: string };
     warn: { uri: string; collection: string };
