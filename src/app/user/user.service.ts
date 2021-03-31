@@ -74,6 +74,7 @@ export default class UserService implements IModules.User.IUserService {
           email: validationService.string().email(),
           id: validationService.string(),
           verifiedEmail: validationService.boolean(),
+          emailVerifyToken: validationService.string(),
         }),
       },
     ),

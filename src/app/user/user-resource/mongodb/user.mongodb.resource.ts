@@ -54,7 +54,7 @@ export default class UserMongodbResource implements IModules.User.IUserResource 
     userData: IModules.User.IParamsForUpdatePrivateUserDataByIdFromService,
   ) {
     if (!this.checkUserIdForValidity(userData.id)) return { success: false, data: null };
-    const userDocument = await this.Users.findByIdAndUpdate(userData.id, userData);
+    const userDocument = await this.Users.findByIdAndUpdate(userData.id, userData.update);
     if (!userDocument) return { success: false, data: null };
     return { success: true, data: userDocument };
   }

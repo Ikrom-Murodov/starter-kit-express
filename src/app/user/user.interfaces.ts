@@ -3,6 +3,7 @@ import { PartialDeep } from 'type-fest';
 import { IServices } from '../../container';
 
 export type TUserPassword = string;
+export type TEmailVerifyToken = string;
 
 export interface IBaseUser {
   name: string;
