@@ -29,7 +29,17 @@ export interface IParamsForRefreshTokenUserFromService {
   deviceId: TDeviceId;
 }
 
+export interface IParamsForLoginUserViaOauthFromService {
+  deviceId: TDeviceId;
+  type: IServices.Oauth.TTypeOauthLogin;
+  code: IServices.Oauth.TCode;
+}
+
 export interface IAuthService {
+  readonly loginViaOauth: (
+    userData: IParamsForLoginUserViaOauthFromService,
+  ) => Promise<IServices.Response.IResponseFromService<IAuthPairToken | null>>;
+
   readonly isAuthenticated: (
     accessToken: TAccessToken,
   ) => Promise<IServices.Response.IResponseFromService>;

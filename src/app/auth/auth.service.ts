@@ -22,6 +22,9 @@ export default class AuthService implements IModules.Auth.IAuthService {
     @inject(tokens.services.ConfigServiceToken)
     private readonly configService: IServices.Config.IConfigService,
 
+    @inject(tokens.services.OauthServiceToken)
+    private readonly oauthService: IServices.Oauth.IOauthService,
+
     @inject(tokens.enums.ResponseTypeEnumToken)
     private readonly responseType: IEnums.IResponseType,
 
@@ -46,6 +49,14 @@ export default class AuthService implements IModules.Auth.IAuthService {
     ),
 
     private readonly accessTokenSchema = validationService.string().required(),
+
+    private readonly validationSchemaForLoginUserViaOauth = validationService.object<IModules.Auth.IParamsForLoginUserViaOauthFromService>(
+      {
+        deviceId: deviceIdSchema,
+        type: validationService.string().valid('vk', 'github', 'google').required(),
+        code: validationService.string().required(),
+      },
+    ),
   ) {}
 
   public async verifyEmail(emailVerifyToken: IModules.User.TEmailVerifyToken) {
@@ -232,6 +243,51 @@ export default class AuthService implements IModules.Auth.IAuthService {
         success: false,
       });
     }
+  }
+
+  public async loginViaOauth(
+    params: IModules.Auth.IParamsForLoginUserViaOauthFromService,
+  ) {
+    const validationErrors = await this.validationService.validationObject(
+      this.validationSchemaForLoginUserViaOauth,
+      params,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    const userData = await this.oauthService[params.type](params.code);
+
+    if (!userData.success || !userData.data) {
+      return this.responseService.responseFromService({
+        ...userData,
+        data: null,
+      });
+    }
+
+    const response = await this.userService.findUsersByParams({
+      find: { email: userData.data.email },
+      limit: 1,
+    });
+
+    let userId: IModules.User.IUser['id'];
+
+    if (!response.data) {
+      const user = await this.userService.createUserViaOauth(userData.data);
+      userId = user.data!.id;
+    } else userId = response.data[0].id;
+
+    this.authResource.deleteUserRefreshTokenByDeviceId(params.deviceId);
+
+    const pairToken = await this.issueTokenPair(userId, params.deviceId, {
+      userId,
+    });
+
+    return this.responseService.responseFromService({
+      data: pairToken,
+      errors: null,
+      message: 'You are successfully logged in.',
+      responseType: this.responseType.OK,
+      success: true,
+    });
   }
 
   private async issueTokenPair(

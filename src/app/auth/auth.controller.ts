@@ -67,4 +67,14 @@ export default class AuthController {
     const result = await this.authService.isAuthenticated(accessToken);
     this.responseService.responseFromController(res, result);
   }
+
+  @httpPost('/oauth-login')
+  public async loginViaOauth(
+    @requestBody() body: IModules.Auth.IParamsForLoginUserViaOauthFromService,
+    req: Request,
+    res: Response,
+  ) {
+    const result = await this.authService.loginViaOauth(body);
+    this.responseService.responseFromController(res, result);
+  }
 }
