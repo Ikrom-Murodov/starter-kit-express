@@ -54,10 +54,17 @@ export interface IParamsForUpdatePrivateUserDataByIdFromService {
   update: PartialDeep<Omit<IUser, 'id'>>;
 }
 
+export interface IParamsForCreateUserViaOauthFromService
+  extends IServices.Oauth.IDataFromOauth {}
+
 export interface IUserService {
   readonly validationSchemaForUserId: IServices.Validation.StringSchema;
   readonly validationSchemaForUserPassword: IServices.Validation.StringSchema;
   readonly validationSchemaForUserEmail: IServices.Validation.StringSchema;
+
+  readonly createUserViaOauth: (
+    userData: IParamsForCreateUserViaOauthFromService,
+  ) => Promise<IServices.Response.IResponseFromService<IPublicUserData | null>>;
 
   readonly getCompleteUserDataById: (
     userId: IUser['id'],
@@ -93,7 +100,25 @@ export type IParamsForCreateUserFromResource = Omit<IUser, 'id'>;
 export interface IParamsForUpdatePrivateUserDataByIdFromResoruce
   extends IParamsForUpdatePrivateUserDataByIdFromService {}
 
+export interface IParamsForCreateUserViaOauthFromResource {
+  name: string;
+  surname: string | null;
+  age: number | null;
+  email: string;
+
+  salt: string | null;
+  passwordHash: string | null;
+  verifiedEmail: boolean | null;
+  emailVerifyToken: string | null;
+  passwordResetToken: string | null;
+  registerType: 'base' | 'oauth';
+}
+
 export interface IUserResource {
+  readonly createUserViaOauth: (
+    userData: IParamsForCreateUserViaOauthFromResource,
+  ) => Promise<IServices.Response.IResponseFromResource<IPublicUserData>>;
+
   readonly updatePrivateUserDataById: (
     userData: IParamsForUpdatePrivateUserDataByIdFromResoruce,
   ) => Promise<IServices.Response.IResponseFromResource<IUser | null>>;

@@ -22,6 +22,14 @@ export default class UserMongodbResource implements IModules.User.IUserResource 
     >('user', userSchema);
   }
 
+  public async createUserViaOauth(
+    userData: IModules.User.IParamsForCreateUserViaOauthFromResource,
+  ) {
+    const userDocument = await this.Users.create(userData);
+    const user = this.getPublicUserDataFromDocument(userDocument);
+    return { success: true, data: user };
+  }
+
   public async createUser(userData: IModules.User.IParamsForCreateUserFromResource) {
     const userDocument = await this.Users.create(userData);
     const user = this.getPublicUserDataFromDocument(userDocument);

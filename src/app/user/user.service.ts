@@ -98,6 +98,13 @@ export default class UserService implements IModules.User.IUserService {
         }),
       },
     ),
+
+    private readonly validationSchemaForCreateUserViaOauth = validationService.object<IModules.User.IParamsForCreateUserViaOauthFromService>(
+      {
+        email: validationService.string().required(),
+        name: validationService.string().required(),
+      },
+    ),
   ) {}
 
   public async checkPassword(
@@ -134,6 +141,51 @@ export default class UserService implements IModules.User.IUserService {
       responseType: this.responseType.OK,
       errors: null,
       message: 'Passwords match.',
+    });
+  }
+
+  public async createUserViaOauth(
+    userData: IModules.User.IParamsForCreateUserViaOauthFromService,
+  ) {
+    const validationErrors = await this.validationService.validationObject(
+      this.validationSchemaForCreateUserViaOauth,
+      userData,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    const user = await this.findUsersByParams({
+      limit: 1,
+      find: { email: userData.email },
+    });
+
+    if (user.data) {
+      return this.responseService.responseFromService({
+        data: null,
+        errors: { email: 'A user with this email address already exists.' },
+        message: 'Email is busy.',
+        responseType: this.responseType.INVALID_DATA,
+        success: false,
+      });
+    }
+
+    const newUser = await this.userResource.createUserViaOauth({
+      ...userData,
+      age: null,
+      emailVerifyToken: null,
+      passwordHash: null,
+      passwordResetToken: null,
+      registerType: 'oauth',
+      salt: null,
+      surname: null,
+      verifiedEmail: true,
+    });
+
+    return this.responseService.responseFromService({
+      data: newUser.data,
+      errors: null,
+      message: 'The user was successfully created.',
+      responseType: this.responseType.CREATED,
+      success: true,
     });
   }
 
