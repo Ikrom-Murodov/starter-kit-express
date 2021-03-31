@@ -39,7 +39,16 @@ export interface IParamsForGeneratePasswordResetTokenFromSErvice {
   email: IModules.User.IUser['email'];
 }
 
+export interface IParamsForResetUserPasswordFromService {
+  passwordResetToken: string;
+  newPassword: IModules.User.TUserPassword;
+}
+
 export interface IAuthService {
+  readonly resetPassword: (
+    userData: IParamsForResetUserPasswordFromService,
+  ) => Promise<IServices.Response.IResponseFromService>;
+
   readonly generatePasswordResetToken: (
     userData: IParamsForGeneratePasswordResetTokenFromSErvice,
   ) => Promise<IServices.Response.IResponseFromService<null>>;

@@ -66,6 +66,13 @@ export default class AuthService implements IModules.Auth.IAuthService {
         email: userService.validationSchemaForUserEmail,
       },
     ),
+
+    private readonly validationSchemaForResetUserPassword = validationService.object<IModules.Auth.IParamsForResetUserPasswordFromService>(
+      {
+        newPassword: userService.validationSchemaForUserPassword,
+        passwordResetToken: validationService.string().required(),
+      },
+    ),
   ) {}
 
   public async generatePasswordResetToken(
@@ -148,6 +155,72 @@ export default class AuthService implements IModules.Auth.IAuthService {
       message: 'We have sent instructions on how to recover your password to your email.',
       responseType: this.responseType.OK,
     });
+  }
+
+  public async resetPassword(
+    userData: IModules.Auth.IParamsForResetUserPasswordFromService,
+  ) {
+    const validationErrors = await this.validationService.validationObject(
+      this.validationSchemaForResetUserPassword,
+      userData,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    try {
+      const { resetPassword } = this.configService.get;
+
+      const data = await this.generateTokenService.verify(
+        userData.passwordResetToken,
+        resetPassword.jwt.secretKey,
+      );
+      const response = await this.userService.getCompleteUserDataById(data.id);
+      const user = response.data;
+
+      if (!user) {
+        return this.responseService.responseFromService({
+          data: null,
+          errors: { refreshToken: 'Your data has been deleted.' },
+          message: 'Not found.',
+          responseType: this.responseType.NOT_FOUND,
+          success: false,
+        });
+      }
+
+      if (user.passwordResetToken !== userData.passwordResetToken) {
+        return this.responseService.responseFromService({
+          data: null,
+          errors: null,
+          message: 'Invalid data.',
+          responseType: this.responseType.INVALID_DATA,
+          success: false,
+        });
+      }
+
+      const { passwordHash, salt } = await this.userService.generateSaltAndPasswordHash(
+        userData.newPassword,
+      );
+
+      await this.userService.updatePrivateUserDataById({
+        id: data.id,
+        update: { salt, passwordHash, passwordResetToken: null },
+      });
+
+      return this.responseService.responseFromService({
+        data: null,
+        errors: null,
+        message: 'Your password has been successfully updated.',
+        responseType: this.responseType.OK,
+        success: true,
+      });
+    } catch (err) {
+      return this.responseService.responseFromService({
+        data: null,
+        errors: null,
+        message: 'Invalid data.',
+        responseType: this.responseType.INVALID_DATA,
+        success: false,
+      });
+    }
   }
 
   public async verifyEmail(emailVerifyToken: IModules.User.TEmailVerifyToken) {
