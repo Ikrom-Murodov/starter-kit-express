@@ -8,6 +8,8 @@ import privateData from './private-data';
 const defaultConfigData: IServices.Config.IConfigData = {
   serverConfig: { host: 'localhost', port: 4545 },
 
+  oauth: privateData.oauth,
+
   logger: {
     error: { uri: 'mongodb://localhost/logger', collection: 'error' },
     warn: { uri: 'mongodb://localhost/logger', collection: 'warn' },
