@@ -5,6 +5,7 @@ import MongooseConnectionService from './mongoose-connection/mongoose-connection
 import ResponseService from './response/response.service';
 import ValidationService from './validation/validation.service';
 import MailService from './mail/mail.service';
+import GenerateTokenService from './generate-token/generate-token.service';
 
 export {
   ConfigService,
@@ -14,4 +15,5 @@ export {
   ResponseService,
   ValidationService,
   MailService,
+  GenerateTokenService,
 };

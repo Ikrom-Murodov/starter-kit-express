@@ -5,5 +5,15 @@ import * as MongooseConnection from './mongoose-connection/mongoose-connection.i
 import * as Response from './response/response.interfaces';
 import * as Validation from './validation/validation.interfaces';
 import * as Mail from './mail/mail.interfaces';
+import * as GenerateToken from './generate-token/generate-token.interfaces';
 
-export { Config, Debug, Logger, MongooseConnection, Response, Validation, Mail };
+export {
+  Config,
+  Debug,
+  Logger,
+  MongooseConnection,
+  Response,
+  Validation,
+  Mail,
+  GenerateToken,
+};

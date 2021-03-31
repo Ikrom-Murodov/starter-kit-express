@@ -15,6 +15,21 @@ import {
 
 import { IServices } from '../../container';
 
+export {
+  ObjectSchema,
+  StringSchema,
+  NumberSchema,
+  SchemaMap,
+  ArraySchema,
+  BooleanSchema,
+  SymbolSchema,
+  FunctionSchema,
+  AnySchema,
+  BinarySchema,
+  DateSchema,
+  Schema,
+};
+
 export interface IValidationService {
   string: () => StringSchema;
 
