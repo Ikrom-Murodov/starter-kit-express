@@ -23,4 +23,14 @@ export default class AuthController {
     const result = await this.authService.register(body);
     this.responseService.responseFromController(res, result);
   }
+
+  @httpPost('/login')
+  public async login(
+    @requestBody() body: IModules.Auth.IParamsForLoginUserFromService,
+    req: Request,
+    res: Response,
+  ) {
+    const result = await this.authService.login(body);
+    this.responseService.responseFromController(res, result);
+  }
 }

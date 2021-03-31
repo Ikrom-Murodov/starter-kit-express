@@ -54,6 +54,10 @@ export interface IParamsForUpdatePrivateUserDataByIdFromService {
 }
 
 export interface IUserService {
+  readonly validationSchemaForUserId: IServices.Validation.StringSchema;
+  readonly validationSchemaForUserPassword: IServices.Validation.StringSchema;
+  readonly validationSchemaForUserEmail: IServices.Validation.StringSchema;
+
   readonly getCompleteUserDataById: (
     userId: IUser['id'],
   ) => Promise<IServices.Response.IResponseFromService<IUser | null>>;
