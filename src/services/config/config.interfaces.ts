@@ -9,6 +9,11 @@ export interface IConfigData {
 
   emails: { createUser: { user: string; pass: string } };
 
+  resetPassword: {
+    jwt: { secretKey: string; expiresIn: string };
+    email: { user: string; pass: string };
+  };
+
   oauth: {
     vk: { clientId: string; clientSecret: string; redirectUri: string };
     github: { clientId: string; clientSecret: string; redirectUri: string };

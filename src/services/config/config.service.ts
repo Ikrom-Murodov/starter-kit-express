@@ -10,6 +10,8 @@ const defaultConfigData: IServices.Config.IConfigData = {
 
   oauth: privateData.oauth,
 
+  resetPassword: privateData.resetPassword,
+
   logger: {
     error: { uri: 'mongodb://localhost/logger', collection: 'error' },
     warn: { uri: 'mongodb://localhost/logger', collection: 'warn' },
