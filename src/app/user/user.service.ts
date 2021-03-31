@@ -267,6 +267,24 @@ export default class UserService implements IModules.User.IUserService {
     });
   }
 
+  public async getCompleteUserDataById(id: IModules.User.IUser['id']) {
+    const validationErrors = await this.validationService.validationData(
+      this.validationSchemaForUserId,
+      id,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    const result = await this.userResource.getCompleteUserDataById(id);
+    if (!result.success || !result.data) return this.userByIdNotFound(id);
+
+    return this.responseService.responseFromService({
+      ...result,
+      errors: null,
+      message: '',
+      responseType: this.responseType.OK,
+    });
+  }
+
   private userByIdNotFound(
     id: IModules.User.IUser['id'],
   ): IServices.Response.IResponseFromService<null> {

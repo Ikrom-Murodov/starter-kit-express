@@ -54,6 +54,10 @@ export interface IParamsForUpdatePrivateUserDataByIdFromService {
 }
 
 export interface IUserService {
+  readonly getCompleteUserDataById: (
+    userId: IUser['id'],
+  ) => Promise<IServices.Response.IResponseFromService<IUser | null>>;
+
   readonly updatePrivateUserDataById: (
     userData: IParamsForUpdatePrivateUserDataByIdFromService,
   ) => Promise<IServices.Response.IResponseFromService<IUser | null>>;
