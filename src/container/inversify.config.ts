@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import { IServices, tokens, IEnums } from './index';
+import { IServices, tokens, IEnums, IUtils, IModules } from './index';
 
 import {
   ConfigService,
@@ -11,9 +11,10 @@ import {
   ValidationService,
 } from '../services';
 
-import { IModules, User } from '../app/app.module';
+import { User } from '../app/app.module';
 
 import { ResponseType } from '../enums';
+import { objectFiltering } from '../utils';
 
 const container: Container = new Container();
 
@@ -67,5 +68,11 @@ container
 container
   .bind<IEnums.IResponseType>(tokens.enums.ResponseTypeEnumToken)
   .toConstantValue(ResponseType);
+
+// ---------- utils ---------- //
+
+container
+  .bind<IUtils.IObjectFiltering>(tokens.utils.objectFilteringToken)
+  .toFunction(objectFiltering);
 
 export default container;
