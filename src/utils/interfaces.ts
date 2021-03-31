@@ -7,3 +7,11 @@ export interface IObjectFiltering {
 export interface IGenerateSymbols {
   (): string;
 }
+
+export interface IGenerateSalt {
+  (size: number, encoding: BufferEncoding): Promise<string>;
+}
+
+export interface IGeneratePassword {
+  (salt: string, password: string, iterators: number, length: number): Promise<string>;
+}

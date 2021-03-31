@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { v4 as uuid } from 'uuid';
 import * as IUtils from './interfaces';
 
@@ -10,6 +11,29 @@ const objectFiltering: IUtils.IObjectFiltering = (object, keys) => {
   }, {});
 };
 
+const generatePassword: IUtils.IGeneratePassword = (
+  salt,
+  password,
+  iterators,
+  length,
+) => {
+  return new Promise((resolve, reject) => {
+    crypto.pbkdf2(password, salt, iterators, length, 'sha512', (err, key) => {
+      if (err) reject(err);
+      else resolve(key.toString('hex'));
+    });
+  });
+};
+
+const generateSalt: IUtils.IGenerateSalt = (size, encoding) => {
+  return new Promise((resolve, reject) => {
+    crypto.randomBytes(size, (err, buf) => {
+      if (err) reject(err);
+      else resolve(buf.toString(encoding));
+    });
+  });
+};
+
 const generateSymbols: IUtils.IGenerateSymbols = () => uuid();
 
-export { objectFiltering, generateSymbols };
+export { objectFiltering, generateSymbols, generateSalt, generatePassword };
