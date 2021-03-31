@@ -6,6 +6,7 @@ import ResponseService from './response/response.service';
 import ValidationService from './validation/validation.service';
 import MailService from './mail/mail.service';
 import GenerateTokenService from './generate-token/generate-token.service';
+import OauthService from './oauth/oauth.service';
 
 export {
   ConfigService,
@@ -16,4 +17,5 @@ export {
   ValidationService,
   MailService,
   GenerateTokenService,
+  OauthService,
 };
