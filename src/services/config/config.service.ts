@@ -16,7 +16,13 @@ const defaultConfigData: IServices.Config.IConfigData = {
 
   mongodbConfig: { uri: 'mongodb://localhost/test' },
 
-  register: { createUser: { saltSize: 128, iterations: 10, length: 128 } },
+  register: {
+    jwt: {
+      accessToken: { secretKey: 'SOME-ACCESS-SECRET-KEY', expiresIn: '1s' },
+      refreshToken: { secretKey: 'SOME-REFRESH-SECRET-KEY', expiresIn: '15d' },
+    },
+    createUser: { saltSize: 128, iterations: 10, length: 128 },
+  },
 
   emails: { createUser: { pass: privateData.pass, user: privateData.user } },
 };
@@ -24,7 +30,9 @@ const defaultConfigData: IServices.Config.IConfigData = {
 const configData: { [key: string]: IServices.Config.IOptionalConfigData } = {
   development: {},
 
-  production: {},
+  production: {
+    register: { jwt: { accessToken: { expiresIn: '25m' } } },
+  },
 };
 
 @injectable()

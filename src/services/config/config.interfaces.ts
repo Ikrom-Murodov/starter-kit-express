@@ -9,7 +9,14 @@ export interface IConfigData {
 
   emails: { createUser: { user: string; pass: string } };
 
-  register: { createUser: { saltSize: number; iterations: number; length: number } };
+  register: {
+    jwt: {
+      accessToken: { secretKey: string; expiresIn: string };
+      refreshToken: { secretKey: string; expiresIn: string };
+    };
+
+    createUser: { saltSize: number; iterations: number; length: number };
+  };
 
   logger: {
     error: { uri: string; collection: string };
