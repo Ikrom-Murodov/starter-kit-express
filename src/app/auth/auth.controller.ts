@@ -1,4 +1,10 @@
-import { controller, httpPost, requestBody } from 'inversify-express-utils';
+import {
+  controller,
+  httpPatch,
+  httpPost,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import { Request, Response } from 'express';
 import { inject } from 'inversify';
 
@@ -31,6 +37,17 @@ export default class AuthController {
     res: Response,
   ) {
     const result = await this.authService.login(body);
+    this.responseService.responseFromController(res, result);
+  }
+
+  @httpPatch('/verify-email/:emailVerifyToken')
+  public async verifyEmail(
+    @requestParam('emailVerifyToken')
+    emailVerifyToken: IModules.User.TEmailVerifyToken,
+    req: Request,
+    res: Response,
+  ) {
+    const result = await this.authService.verifyEmail(emailVerifyToken);
     this.responseService.responseFromController(res, result);
   }
 }

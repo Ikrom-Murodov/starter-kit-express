@@ -34,6 +34,10 @@ export interface IAuthService {
   readonly login: (
     userData: IParamsForLoginUserFromService,
   ) => Promise<IServices.Response.IResponseFromService<IAuthPairToken | null>>;
+
+  readonly verifyEmail: (
+    emailVerifyToken: IModules.User.TEmailVerifyToken,
+  ) => Promise<IServices.Response.IResponseFromService>;
 }
 
 export interface IParamsForCreateUserRefreshTokenFromResource extends IAuthRefreshToken {}

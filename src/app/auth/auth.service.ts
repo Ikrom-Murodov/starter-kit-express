@@ -34,7 +34,47 @@ export default class AuthService implements IModules.Auth.IAuthService {
         deviceId: deviceIdSchema,
       },
     ),
+
+    private readonly emailVerifyTokenSchema = validationService.string().required(),
   ) {}
+
+  public async verifyEmail(emailVerifyToken: IModules.User.TEmailVerifyToken) {
+    const validationErrors = await this.validationService.validationData(
+      this.emailVerifyTokenSchema,
+      emailVerifyToken,
+    );
+    if (!validationErrors.success) return validationErrors;
+
+    const response = await this.userService.findUsersByParams({
+      find: { emailVerifyToken },
+      limit: 1,
+    });
+
+    if (!response.success || !response.data) {
+      return this.responseService.responseFromService({
+        data: null,
+        success: false,
+        errors: { token: 'You have passed an invalid token.' },
+        message: 'Invalid token.',
+        responseType: this.responseType.INVALID_DATA,
+      });
+    }
+
+    const user = response.data[0];
+
+    await this.userService.updatePrivateUserDataById({
+      id: user.id,
+      update: { emailVerifyToken: null, verifiedEmail: true },
+    });
+
+    return this.responseService.responseFromService({
+      data: null,
+      errors: null,
+      success: true,
+      message: 'Your email address has been successfully verified.',
+      responseType: this.responseType.OK,
+    });
+  }
 
   public async register(userData: IModules.Auth.IParamsForRegisterUserFromService) {
     const response = await this.userService.createUser(userData);
