@@ -6,6 +6,7 @@ import {
   ConfigService,
   DebugService,
   LoggerService,
+  MailService,
   MongooseConnectionService,
   ResponseService,
   ValidationService,
@@ -61,6 +62,11 @@ container
 container
   .bind<IServices.Response.IResponseService>(tokens.services.ResponseServiceToken)
   .to(ResponseService)
+  .inSingletonScope();
+
+container
+  .bind<IServices.Mail.IMailService>(tokens.services.MailServiceToken)
+  .to(MailService)
   .inSingletonScope();
 
 // ---------- enums ---------- //

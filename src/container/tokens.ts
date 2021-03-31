@@ -6,6 +6,7 @@ const LoggerServiceToken = Symbol('Logger service token');
 const MongooseConnectionServiceToken = Symbol('Mongoose connection service');
 const ResponseServiceToken = Symbol('Response service token');
 const ValidationServiceToken = Symbol('Validation service token');
+const MailServiceToken = Symbol('Mail service token');
 
 // ---------- enums ---------- //
 
@@ -31,6 +32,7 @@ export default {
     MongooseConnectionServiceToken,
     ResponseServiceToken,
     ValidationServiceToken,
+    MailServiceToken,
   },
 
   enums: { ResponseTypeEnumToken },
