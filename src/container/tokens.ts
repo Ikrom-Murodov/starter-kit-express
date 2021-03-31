@@ -21,6 +21,7 @@ const userTokens = {
 // ---------- utils ---------- //
 
 const objectFilteringToken = Symbol('Object filtering tokens.');
+const generateSymbolsToken = Symbol('Generate symbols token.');
 
 export default {
   services: {
@@ -36,5 +37,5 @@ export default {
 
   modules: { userTokens },
 
-  utils: { objectFilteringToken },
+  utils: { objectFilteringToken, generateSymbolsToken },
 };

@@ -14,7 +14,7 @@ import {
 import { User } from '../app/app.module';
 
 import { ResponseType } from '../enums';
-import { objectFiltering } from '../utils';
+import { generateSymbols, objectFiltering } from '../utils';
 
 const container: Container = new Container();
 
@@ -74,5 +74,9 @@ container
 container
   .bind<IUtils.IObjectFiltering>(tokens.utils.objectFilteringToken)
   .toFunction(objectFiltering);
+
+container
+  .bind<IUtils.IGenerateSymbols>(tokens.utils.generateSymbolsToken)
+  .toFunction(generateSymbols);
 
 export default container;
